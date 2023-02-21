@@ -1,6 +1,8 @@
 package com.example.easytutofilemanager;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AlertDialogLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
@@ -85,7 +88,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        //Uncomment the below code to Set the message and title from the strings.xml file
+
+
                         if(item.getTitle().equals("DELETE")){
+                            showAlertDialog();
                             boolean deleted = selectedFile.delete();
                             if(deleted){
                                 Toast.makeText(context.getApplicationContext(),"DELETED ",Toast.LENGTH_SHORT).show();
@@ -93,12 +100,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                             }
                         }
                         if(item.getTitle().equals("MOVE")){
+                            showAlertDialog();
                             Toast.makeText(context.getApplicationContext(),"MOVED ",Toast.LENGTH_SHORT).show();
 
                         }
                         if(item.getTitle().equals("RENAME")){
+                            showAlertDialog();
                             Toast.makeText(context.getApplicationContext(),"RENAME ",Toast.LENGTH_SHORT).show();
-
                         }
                         return true;
                     }
@@ -110,6 +118,34 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         });
 
 
+    }
+
+    public boolean showAlertDialog(){
+        final Boolean[] select = {false};
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context.getApplicationContext());
+        builder1.setMessage("Write your message here.");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        select[0] =true;
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        return select[0];
     }
 
     @Override
